@@ -1,8 +1,7 @@
 pipeline {
-    agent none 
+    agent any
     stages {
         stage('BUILD') {
-            agent any
             steps {
                 sh '''
                     #!/bin/bash 
@@ -13,8 +12,7 @@ pipeline {
                 '''  
             }
         }
-        stage('DEPLOY') {
-            agent { label 'slave1' } 
+        stage('DEPLOY') { 
             steps {
                 echo "This is a DEPLOY stage"
                 sh 'sleep 5'
@@ -23,14 +21,12 @@ pipeline {
         stage('TESTING') {
             parallel {
                 stage('TESTING1') {
-                    agent { label 'slave2' } 
                     steps {
                         sh 'echo "This is a TESTING1 stage"'
                         sh 'sleep 5'
                     }
                 }
-                stage('TESTING2') {
-                    agent { label 'master' } 
+                stage('TESTING2') { 
                     steps {
                         sh '''
                             echo "This is a TESTING2 stage"
@@ -41,4 +37,5 @@ pipeline {
                 
         }    
     }
+}
 }
